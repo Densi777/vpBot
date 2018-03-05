@@ -1,29 +1,59 @@
 # -*- coding: utf-8 -*-
 import telebot
 import config
+import inf
 from telebot import types
 import datetime
 
 bot = telebot.TeleBot(config.token)
-greetings = ('Здравствуй', 'Привет', 'Доброго времени суток')
 
 
 @bot.message_handler(commands=['start'])
-def start(message):
-    now = datetime.datetime.now()
-    today = now.day
-    hour = now.hour
-
+def mainMenu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*[types.KeyboardButton(choice) for choice in ['Главное меню', 'Error']])
-    msg = bot.send_message(message.chat.id, 'Привет!\nДавай начнём!', reply_markup=keyboard)
-    bot.register_next_step_handler(msg, choice)
+    keyboard.add(*[types.KeyboardButton(menu) for menu in ['Заказать', 'Корпоратив', 'Прайс-лист', 'Настройки', 'Информация', 'О нас']])
+    msg = bot.send_message(message.chat.id, 'Главное меню:', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, menu)
 
-def choice(message):
-    if message.text == 'Главное меню':
-        bot.send_message(message.chat.id, '1')
-    elif message.text == 'Error':
-        bot.send_message(message.chat.id, '2')
+def menu(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    if message.text == 'Настройки':
+        settings(message)
+
+    elif message.text == 'Информация':
+        info(message)
+
+    elif message.text == 'О нас':
+        about(message)
+
+def settings(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*[types.KeyboardButton(account_info) for account_info in ['Домашний адрес', 'История заказов', 'Назад']])
+    msg = bot.send_message(message.chat.id, 'Аккаунт:', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, account_info)
+
+def account_info(message):
+    if message.text == 'Домашний адрес':
+        pass
+
+    elif message.text == 'История заказов':
+        pass
+
+    elif message.text == 'Назад':
+        mainMenu(message)
+
+
+def about(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add('Назад')
+    msg = bot.send_message(message.chat.id, inf.about_us, reply_markup=keyboard)
+    bot.register_next_step_handler(msg, mainMenu)
+
+def info(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add('Назад')
+    msg = bot.send_message(message.chat.id, inf.info_text, reply_markup=keyboard)
+    bot.register_next_step_handler(msg, mainMenu)
 
 
 if __name__ == '__main__':
