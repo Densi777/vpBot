@@ -7,7 +7,7 @@ from telebot import types
 import datetime
 
 bot = telebot.TeleBot(config.token)
-conn = psycopg2.connect( host='185.228.233.139', user=den, password=root7, dbname=vpbot_accounts_db)
+conn = psycopg2.connect( host='localhost', user=den, password=root7, dbname=vpbot_accounts_db)
 cursor = conn.cursor()
 
 
