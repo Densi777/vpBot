@@ -22,7 +22,16 @@ def mainMenu(message):
 
 def menu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    if message.text == '⚙ Настройки':
+    if message.text == '📝 Заказать':
+        pass
+
+    elif message.text == '🥂 Корпоратив':
+        pass
+
+    elif message.text == '💰 Прайс-лист':
+        price_list(message)
+
+    elif message.text == '⚙ Настройки':
         settings(message)
 
     elif message.text == 'ℹ Информация':
@@ -30,6 +39,13 @@ def menu(message):
 
     elif message.text == '👔 О нас':
         about(message)
+
+def price_list(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.row('🐒 Лёгкие табаки', '🦍 Крепкие табаки')
+    keyboard.row('↪ Назад')
+    msg = bot.send_message(message.chat.id, '👤 Аккаунт:', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, account_info)
 
 def settings(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
