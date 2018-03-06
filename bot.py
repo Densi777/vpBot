@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 import telebot
-import psycopg2
+#import psycopg2
 import config
 import inf
 from telebot import types
 import datetime
 
 bot = telebot.TeleBot(config.token)
-conn = psycopg2.connect( host='localhost', user=den, password=root7, dbname=vpbot_accounts_db)
-cursor = conn.cursor()
+#conn = psycopg2.connect( host='localhost', user=den, password=root7, dbname=vpbot_accounts_db)
+#cursor = conn.cursor()
 
 
 @bot.message_handler(commands=['start'])
