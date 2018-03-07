@@ -72,15 +72,17 @@ def order_cups(message):
 @bot.message_handler(commands=['geophone'])
 def order_set_address_get(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    geolocation_button = types.KeyboardButton(text="📍 Местоположение", request_location=True)
-    keyboard.add(geolocation_button, '↪ Назад')
-    bot.send_message(message.chat.id, 'Напишите адрес доставки\nИли отправьте местоположение', reply_markup=keyboard)
+    #geolocation_button = types.KeyboardButton(text="📍 Местоположение", request_location=True)
+    keyboard.row('📍 Местоположение')
+    keyboard.row('↪ Назад')
+    msg = bot.send_message(message.chat.id, 'Напишите адрес доставки\nИли отправьте местоположение', reply_markup=keyboard)
     bot.register_next_step_handler(msg, order_set_address)
 
-@bot.message_handler(commands=['geophone'])
+
 def order_set_address(message):
-    if keyboard == geolocation_button:
-        bot.send_location(location.chat.id, 'Местоположение отправлено')
+    if message.text == '📍 Местоположение':
+        bot.send_location(message.chat.id, 'Местоположение отправлено', longitude)
+        order_done(message)
 
     elif message.text == '↪ Назад':
         order_cups_get(message)
@@ -137,10 +139,11 @@ def info(message):
     msg = bot.send_message(message.chat.id, inf.info_text, reply_markup=keyboard)
     bot.register_next_step_handler(msg, mainMenu)
 
-@bot.message_handler(commands=['geophone'])
-def geophone(message):
-    button_phone = types.KeyboardButton(text="Отправить номер телефона", request_contact=True)
-    button_geo = types.KeyboardButton(text="Отправить местоположение", request_location=True)
+def order_done(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add('📖 Главное меню')
+    msg = bot.send_message(message.chat.id, 'Заказ принят', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, mainMenu)
 
 
 if __name__ == '__main__':
