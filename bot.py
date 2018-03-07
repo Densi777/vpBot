@@ -69,23 +69,35 @@ def order_cups(message):
     elif message.text == '↪ Назад':
         order_tobacco(message)
 
-@bot.message_handler(commands=['geophone'])
+def verify_order(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.row('Да', 'Вернуться')
+    msg = bot.send_message(message.chat.id, 'Подтвердите Ваш заказ\nВсе верно?', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, yes_or_no)
+
+def yes_or_no(message):
+    if message.text == 'Да':
+        done(message)
+
+    elif message.text == 'Вернуться':
+        order_set_address_get(message)
+
 def order_set_address_get(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    #geolocation_button = types.KeyboardButton(text="📍 Местоположение", request_location=True)
-    keyboard.row('📍 Местоположение')
-    keyboard.row('↪ Назад')
+    geolocation_button = types.KeyboardButton(text="📍 Местоположение", request_location=True)
+    keyboard.add(geolocation_button)
     msg = bot.send_message(message.chat.id, 'Напишите адрес доставки\nИли отправьте местоположение', reply_markup=keyboard)
-    bot.register_next_step_handler(msg, order_set_address)
+    bot.register_next_step_handler(msg, verify_order)
 
+def done(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.row('Завершить')
+    msg = bot.send_message(message.chat.id, 'Заказ принят', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, close_order)
 
-def order_set_address(message):
-    if message.text == '📍 Местоположение':
-        bot.send_location(message.chat.id, 'Местоположение отправлено', longitude)
-        order_done(message)
-
-    elif message.text == '↪ Назад':
-        order_cups_get(message)
+def close_order(message):
+    if message.text == 'Завершить':
+        mainMenu(message)
 
 def price_list(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
