@@ -22,7 +22,6 @@ def mainMenu(message):
     bot.register_next_step_handler(msg, menu)
 
 def menu(message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if message.text == '📝 Заказать':
         order.order_tobacco(message)
 

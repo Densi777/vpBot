@@ -80,4 +80,4 @@ def done(message):
 
 def close_order(message):
     if message.text == '✔ Завершить':
-        bot.mainMenu(message)
+        bot_main.mainMenu(message)
