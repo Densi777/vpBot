@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
 import telebot
-#import psycopg2
 import config
 import inf
 from telebot import types
-import datetime
 import order
 
 bot = telebot.TeleBot(config.token)
-#conn = psycopg2.connect( host='localhost', user=den, password=root7, dbname=vpbot_accounts_db)
-#cursor = conn.cursor()
 
 
 @bot.message_handler(commands=['start'])
-def mainMenu(message):
+def main_menu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('📝 Заказать', '🥂 Корпоратив')
     keyboard.row('💰 Прайс-лист', '⚙ Настройки')
@@ -21,8 +17,8 @@ def mainMenu(message):
     msg = bot.send_message(message.chat.id, '📖 Главное меню:', reply_markup=keyboard)
     bot.register_next_step_handler(msg, menu)
 
+
 def menu(message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if message.text == '📝 Заказать':
         order.order_tobacco(message)
 
