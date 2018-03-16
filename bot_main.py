@@ -3,12 +3,12 @@ import telebot
 import config
 import inf
 from telebot import types
-import psycopg2
+# import psycopg2
 
 bot = telebot.TeleBot(config.token)
-conn = psycopg2.connect(database="testdb", user="admin", password="12qwaszx", host="185.228.233.139", port="5432")
-print('Connected')
-cur = conn.cursor()
+# conn = psycopg2.connect(database="testdb", user="admin", password="12qwaszx", host="127.0.0.1", port="5432")
+# print('Connected')
+# cur = conn.cursor()
 
 
 @bot.message_handler(commands=['start'])
