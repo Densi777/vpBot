@@ -175,7 +175,7 @@ def price_list_get(message):
         bot.send_message(message.chat.id, inf.banquet_price)
         price_list(message)
 
-    elif message.text == '↪ Назад';
+    elif message.text == '↪ Назад':
         main_menu(message)
 
 
