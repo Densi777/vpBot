@@ -22,7 +22,6 @@ def main_menu(message):
 
 
 def menu(message):
-    print(message)
     if message.text == '📝 Заказать':
         order_tobacco(message)
 
@@ -92,7 +91,6 @@ def order_set_address_get(message):
 
 
 def address_or_location(message):
-    print(message.text)
     if message.text != '📍 Местоположение':
         verify_order(message)
 
@@ -184,11 +182,13 @@ def about(message):
     msg = bot.send_message(message.chat.id, inf.about_us, reply_markup=keyboard)
     bot.register_next_step_handler(msg, main_menu)
 
+
 def info(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add('↪ Назад')
     msg = bot.send_message(message.chat.id, inf.info_text, reply_markup=keyboard)
     bot.register_next_step_handler(msg, main_menu)
+
 
 def order_done(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
