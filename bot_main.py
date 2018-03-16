@@ -6,8 +6,9 @@ from telebot import types
 import psycopg2
 
 bot = telebot.TeleBot(config.token)
-#conn = psycopg2.connect(database="testdb", user="admin", password="12qwaszx", host="185.228.233.139", port="5432")
-#cur = conn.cursor()
+conn = psycopg2.connect(database="testdb", user="admin", password="12qwaszx", host="185.228.233.139", port="5432")
+print('Connected')
+cur = conn.cursor()
 
 
 @bot.message_handler(commands=['start'])
@@ -85,13 +86,14 @@ def order_set_address_get(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     geolocation_button = types.KeyboardButton(text="📍 Местоположение", request_location=True)
     keyboard.add(geolocation_button)
-    msg = bot.send_message(message.chat.id, 'Напишите адрес доставки\nИли отправьте местоположение', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, 'Напишите адрес доставки\nИли отправьте местоположение',
+                           reply_markup=keyboard)
     bot.register_next_step_handler(msg, address_or_location)
 
 
 def address_or_location(message):
+    print(message.text)
     if message.text != '📍 Местоположение':
-        print(message.text)
         verify_order(message)
 
 
