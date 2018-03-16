@@ -175,6 +175,9 @@ def price_list_get(message):
         bot.send_message(message.chat.id, inf.banquet_price)
         price_list(message)
 
+    elif message.text == '↪ Назад';
+        main_menu(message)
+
 
 def tobacco_prices(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -192,6 +195,9 @@ def tobacco_prices_get(message):
     elif message.text == 'Крепкий':
         bot.send_message(message.chat.id, inf.hard_tobacco)
         price_list(message)
+
+    elif message.text == '↪ Назад':
+        main_menu(message)
 
 
 def settings(message):
