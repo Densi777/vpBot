@@ -10,7 +10,7 @@ from telebot import types
 # cur = conn.cursor()
 
 WEBHOOK_HOST = '185.228.233.139'
-WEBHOOK_PORT = 443
+WEBHOOK_PORT = 88
 WEBHOOK_LISTEN = '0.0.0.0'
 
 WEBHOOK_SSL_CERT = './certs/webhook_cert.pem'
