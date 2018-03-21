@@ -1,17 +1,60 @@
 # -*- coding: utf-8 -*-
 import telebot
+import cherrypy
 import config
 import inf
 from telebot import types
 # import psycopg2
-
-bot = telebot.TeleBot(config.token)
 # conn = psycopg2.connect(database="testdb", user="admin", password="12qwaszx", host="127.0.0.1", port="5432")
 # print('Connected')
 # cur = conn.cursor()
 
+WEBHOOK_HOST = '185.228.233.139'
+WEBHOOK_PORT = 443
+WEBHOOK_LISTEN = '0.0.0.0'
 
-@bot.message_handler(commands=['start'])
+WEBHOOK_SSL_CERT = 'cert/webhook_cert.pem'
+WEBHOOK_SSL_PRIV = 'cert/webhook_pkey.pem'
+
+WEBHOOK_URL_BASE = "https://%s:%s" % (WEBHOOK_HOST, WEBHOOK_PORT)
+WEBHOOK_URL_PATH = "/%s/" % config.token
+
+
+bot = telebot.TeleBot(config.token)
+
+
+class WebhookServer(object):
+    @cherrypy.expose
+    def index(self):
+        if 'content-length' in cherrypy.request.headers and \
+                        'content-type' in cherrypy.request.headers and \
+                        cherrypy.request.headers['content-type'] == 'application/json':
+            length = int(cherrypy.request.headers['content-length'])
+            json_string = cherrypy.request.body.read(length).decode("utf-8")
+            update = telebot.types.Update.de_json(json_string)
+            bot.process_new_updates([update])
+            return ''
+        else:
+            raise cherrypy.HTTPError(403)
+
+
+bot.remove_webhook()
+
+bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH, certificate=open(WEBHOOK_SSL_CERT, 'r'))
+
+
+cherrypy.config.update({
+    'server.socket_host': WEBHOOK_LISTEN,
+    'server.socket_port': WEBHOOK_PORT,
+    'server.ssl_module': 'builtin',
+    'server.ssl_certificate': WEBHOOK_SSL_CERT,
+    'server.ssl_private_key': WEBHOOK_SSL_PRIV
+})
+
+cherrypy.quickstart(WebhookServer(), WEBHOOK_URL_PATH, {'/': {}})
+
+
+@bot.message_handler(func=lambda message: True, commands=['start'])
 def main_menu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('📝 Заказать', '🥂 Корпоратив')
