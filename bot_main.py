@@ -13,8 +13,8 @@ WEBHOOK_HOST = '185.228.233.139'
 WEBHOOK_PORT = 443
 WEBHOOK_LISTEN = '0.0.0.0'
 
-WEBHOOK_SSL_CERT = 'cert/webhook_cert.pem'
-WEBHOOK_SSL_PRIV = 'cert/webhook_pkey.pem'
+WEBHOOK_SSL_CERT = './cert/webhook_cert.pem'
+WEBHOOK_SSL_PRIV = './cert/webhook_pkey.pem'
 
 WEBHOOK_URL_BASE = "https://%s:%s" % (WEBHOOK_HOST, WEBHOOK_PORT)
 WEBHOOK_URL_PATH = "/%s/" % config.token
