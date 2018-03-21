@@ -38,22 +38,6 @@ class WebhookServer(object):
             raise cherrypy.HTTPError(403)
 
 
-bot.remove_webhook()
-
-bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH, certificate=open(WEBHOOK_SSL_CERT, 'r'))
-
-
-cherrypy.config.update({
-    'server.socket_host': WEBHOOK_LISTEN,
-    'server.socket_port': WEBHOOK_PORT,
-    'server.ssl_module': 'builtin',
-    'server.ssl_certificate': WEBHOOK_SSL_CERT,
-    'server.ssl_private_key': WEBHOOK_SSL_PRIV
-})
-
-cherrypy.quickstart(WebhookServer(), WEBHOOK_URL_PATH, {'/': {}})
-
-
 @bot.message_handler(func=lambda message: True, commands=['start'])
 def main_menu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -303,6 +287,22 @@ def select_info(message):
 
     elif message.text == '↪ Назад':
         main_menu(message)
+
+
+bot.remove_webhook()
+
+bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH, certificate=open(WEBHOOK_SSL_CERT, 'r'))
+
+
+cherrypy.config.update({
+    'server.socket_host': WEBHOOK_LISTEN,
+    'server.socket_port': WEBHOOK_PORT,
+    'server.ssl_module': 'builtin',
+    'server.ssl_certificate': WEBHOOK_SSL_CERT,
+    'server.ssl_private_key': WEBHOOK_SSL_PRIV
+})
+
+cherrypy.quickstart(WebhookServer(), WEBHOOK_URL_PATH, {'/': {}})
 
 
 if __name__ == '__main__':
