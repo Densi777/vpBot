@@ -6,7 +6,7 @@ import inf
 from telebot import types
 import psycopg2
 
-conn = psycopg2.connect(database="testdb", user="user", password="root7", host="127.0.0.1", port="5432")
+conn = psycopg2.connect(database="testdb", user="admin", password="12qwasxz", host="127.0.0.1", port="5432")
 print('Connected')
 # cur = conn.cursor()
 
