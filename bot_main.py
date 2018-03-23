@@ -4,9 +4,10 @@ import cherrypy
 import config
 import inf
 from telebot import types
-# import psycopg2
-# conn = psycopg2.connect(database="testdb", user="admin", password="12qwaszx", host="127.0.0.1", port="5432")
-# print('Connected')
+import psycopg2
+
+conn = psycopg2.connect(database="testdb", user="user", password="root7", host="127.0.0.1", port="5432")
+print('Connected')
 # cur = conn.cursor()
 
 WEBHOOK_HOST = '185.228.233.139'
