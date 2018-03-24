@@ -79,7 +79,7 @@ def order_tobacco_get(message):
 
 
 def order_cups(message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     keyboard.row('1️⃣ Одна', '2️⃣ Две', '3️⃣ Три')
     keyboard.row('🔢 Более трёх', '↪ Назад')
     msg = bot.send_message(message.chat.id, '☕ Выберите количество чашек:', reply_markup=keyboard)
