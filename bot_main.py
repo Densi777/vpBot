@@ -111,7 +111,16 @@ def order_set_address(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('Отправить')
     msg = bot.send_message(message.chat.id, 'Напишите адрес доставки', reply_markup=keyboard)
-    bot.register_next_step_handler(msg, verify_order)
+    bot.register_next_step_handler(msg, address_is_empty)
+
+
+def address_is_empty(message):
+    if message.text == '':
+        bot.send_message(message.chat.id, 'Вы введи пустое поле!')
+        order_set_address(message)
+
+    elif message.text != '':
+        verify_order(message)
 
 
 def verify_order(message):
@@ -252,7 +261,7 @@ def tobacco_prices(message):
     keyboard.row('Лёгкий', 'Крепкий')
     keyboard.row('↪ Назад')
     msg = bot.send_message(message.chat.id, 'Табак:', reply_markup=keyboard)
-    bot.register_next_step_handler(msg, tobacco_prices)
+    bot.register_next_step_handler(msg, tobacco_prices_get)
 
 
 def tobacco_prices_get(message):
