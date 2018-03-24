@@ -153,7 +153,8 @@ def close_order(message):
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n3 чаши\nПо адресу:\n' + config.address)
 
         elif config.excount == 4:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id,
+                             text='Заказ:\nЛёгкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
 
         elif config.excount == 11:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n1 чаша\nПо адресу:\n' + config.address)
@@ -165,17 +166,20 @@ def close_order(message):
             bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n3 чаши\nПо адресу:\n' + config.address)
 
         elif config.excount == 14:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id,
+                             text='Заказ:\nКрепкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
 
         elif config.excount == 120:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nБанкет\nДо 5 человек\nПо адресу:\n' + config.address)
 
         elif config.excount == 121:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\nБолее 5 человек\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id,
+                             text='Заказ:\nКрепкий кальян\nБолее 5 человек\nПо адресу:\n' + config.address)
 
         elif config.excount == 122:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\nБолее 10 человек\nПо адресу:\n' + config.address)
-        main_menu(message)
+            bot.send_message(chat_id=config.my_id,
+                             text='Заказ:\nКрепкий кальян\nБолее 10 человек\nПо адресу:\n' + config.address)
+    main_menu(message)
 
 
 def banquet(message):
