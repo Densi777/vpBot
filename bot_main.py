@@ -122,7 +122,6 @@ def order_set_address(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('Отправить')
     msg = bot.send_message(message.chat.id, 'Напишите адрес доставки', reply_markup=keyboard)
-    config.address = message.text
     bot.register_next_step_handler(msg, verify_order)
 
 
@@ -135,6 +134,7 @@ def verify_order(message):
 
 def yes_or_no(message):
     if message.text == '✅ Да':
+        config.address = message.text
         done(message)
 
     elif message.text == '♻ Вернуться':
