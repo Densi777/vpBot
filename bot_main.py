@@ -6,9 +6,6 @@ import inf
 import psycopg2
 from telebot import types
 
-conn = psycopg2.connect(database="testdb", user="postgres", password="12qwaszx", host="185.228.233.139", port="5432")
-print('Connected to database')
-
 WEBHOOK_HOST = '185.228.233.139'
 WEBHOOK_PORT = 88
 WEBHOOK_LISTEN = '0.0.0.0'
@@ -19,8 +16,10 @@ WEBHOOK_SSL_PRIV = './certs/webhook_pkey.pem'
 WEBHOOK_URL_BASE = "https://%s:%s" % (WEBHOOK_HOST, WEBHOOK_PORT)
 WEBHOOK_URL_PATH = "/%s/" % config.token
 
-
 bot = telebot.TeleBot(config.token)
+
+onn = psycopg2.connect(database="testdb", user="postgres", password="12qwaszx", host="185.228.233.139", port="5432")
+print('Connected to database')
 
 
 class WebhookServer(object):
