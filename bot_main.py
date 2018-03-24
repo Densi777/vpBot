@@ -3,7 +3,12 @@ import telebot
 import config
 import cherrypy
 import inf
+import psycopg2
 from telebot import types
+
+conn = psycopg2.connect(database="testdb", user="postgres", password="12qwaszx", host="185.228.233.139", port="5432")
+print('Connected to database')
+cur = conn.cursor()
 
 WEBHOOK_HOST = '185.228.233.139'
 WEBHOOK_PORT = 88
@@ -109,16 +114,7 @@ def order_cups_get(message):
 
 def order_set_address(message):
     msg = bot.send_message(message.chat.id, 'Напишите адрес доставки')
-    bot.register_next_step_handler(msg, address_is_empty)
-
-
-def address_is_empty(message):
-    if message.text == '':
-        bot.send_message(message.chat.id, 'Вы введи пустое поле!')
-        order_set_address(message)
-
-    elif message.text != '':
-        verify_order(message)
+    bot.register_next_step_handler(msg, verify_order)
 
 
 def verify_order(message):
@@ -147,40 +143,42 @@ def done(message):
 def close_order(message):
     if message.text == '✔ Завершить':
         if config.excount == 3:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + config.address)
+            cur.execute("INSERT INTO USER_DATA (ORDER) \
+                  VALUES (Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n + inf.address) ")
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + inf.address)
 
         elif config.excount == 4:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n2 чаши\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n2 чаши\nПо адресу:\n' + inf.address)
 
         elif config.excount == 5:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n3 чаши\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n3 чаши\nПо адресу:\n' + inf.address)
 
         elif config.excount == 6:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\nБолее трёх чаш\nПо адресу:\n' + inf.address)
 
         elif config.excount == 11:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n1 чаша\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n1 чаша\nПо адресу:\n' + inf.address)
 
         elif config.excount == 12:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n2 чаши\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n2 чаши\nПо адресу:\n' + inf.address)
 
         elif config.excount == 13:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n3 чаши\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n3 чаши\nПо адресу:\n' + inf.address)
 
         elif config.excount == 14:
             bot.send_message(chat_id=config.my_id,
-                             text='Заказ:\nКрепкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
+                             text='Заказ:\nКрепкий кальян\nБолее трёх чаш\nПо адресу:\n' + inf.address)
 
         elif config.excount == 120:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nБанкет\nДо 5 человек\nПо адресу:\n' + config.address)
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nБанкет\nДо 5 человек\nПо адресу:\n' + inf.address)
 
         elif config.excount == 121:
             bot.send_message(chat_id=config.my_id,
-                             text='Заказ:\nКрепкий кальян\nБолее 5 человек\nПо адресу:\n' + config.address)
+                             text='Заказ:\nКрепкий кальян\nБолее 5 человек\nПо адресу:\n' + inf.address)
 
         elif config.excount == 122:
             bot.send_message(chat_id=config.my_id,
-                             text='Заказ:\nКрепкий кальян\nБолее 10 человек\nПо адресу:\n' + config.address)
+                             text='Заказ:\nКрепкий кальян\nБолее 10 человек\nПо адресу:\n' + inf.address)
     main_menu(message)
 
 
