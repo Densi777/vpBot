@@ -122,8 +122,7 @@ def order_set_address(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('Отправить')
     msg = bot.send_message(message.chat.id, 'Напишите адрес доставки', reply_markup=keyboard)
-    print(msg)
-    config.address = msg.text
+    config.address = message.text
     bot.register_next_step_handler(msg, verify_order)
 
 
