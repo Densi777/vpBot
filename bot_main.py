@@ -51,11 +51,10 @@ def main_menu(message):
 
 def menu(message):
     if message.text == '📝 Заказать':
-        config.excount += 1
         order_tobacco(message)
 
     elif message.text == '🥂 Банкет':
-        config.excount += 2
+        config.excount += 100
         banquet(message)
 
     elif message.text == '💰 Прайс-лист':
@@ -81,7 +80,6 @@ def order_tobacco(message):
 
 def order_tobacco_get(message):
     if message.text == '🐒 Лёгкий':
-        config.excount += 1
         order_cups(message)
 
     elif message.text == '🦍 Крепкий':
@@ -150,48 +148,60 @@ def done(message):
 
 def close_order(message):
     if message.text == '✔ Завершить':
-        if config.excount == 3:
+        if config.excount == 1:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + config.address)
 
-        elif config.excount == 4:
+        elif config.excount == 2:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n2 чаши\nПо адресу:\n' + config.address)
 
-        elif config.excount == 5:
+        elif config.excount == 3:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n3 чаши\nПо адресу:\n' + config.address)
 
-        elif config.excount == 6:
+        elif config.excount == 4:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
 
-        elif config.excount == 12:
+        elif config.excount == 11:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n1 чаша\nПо адресу:\n' + config.address)
 
-        elif config.excount == 13:
+        elif config.excount == 12:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n2 чаши\nПо адресу:\n' + config.address)
 
-        elif config.excount == 14:
+        elif config.excount == 13:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n3 чаши\nПо адресу:\n' + config.address)
 
-        elif config.excount == 15:
+        elif config.excount == 14:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
+
+        elif config.excount == 120:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nБанкет\nДо 5 человек\nПо адресу:\n' + config.address)
+
+        elif config.excount == 121:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\nБолее 5 человек\nПо адресу:\n' + config.address)
+
+        elif config.excount == 122:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\nБолее 10 человек\nПо адресу:\n' + config.address)
         main_menu(message)
 
 
 def banquet(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('5+', '10+', '20+')
+    keyboard.row('До 5', '5+', '10+')
     keyboard.row('↪ Назад')
     msg = bot.send_message(message.chat.id, 'Сколько Вас человек?', reply_markup=keyboard)
     bot.register_next_step_handler(msg, banquet_get)
 
 
 def banquet_get(message):
-    if message.text == '5+':
+    if message.text == 'До 5':
+        config.excount += 10
+        count_of_hookahs(message)
+
+    elif message.text == '5+':
+        config.excount += 11
         count_of_hookahs(message)
 
     elif message.text == '10+':
-        count_of_hookahs(message)
-
-    elif message.text == '20+':
+        config.excount += 12
         count_of_hookahs(message)
 
     elif message.text == '↪ Назад':
@@ -208,12 +218,15 @@ def count_of_hookahs(message):
 
 def count_of_hookahs_get(message):
     if message.text == 'Один':
+        config.excount += 10
         order_set_address(message)
 
     elif message.text == 'Два':
+        config.excount += 10
         order_set_address(message)
 
     elif message.text == 'Три':
+        config.excount += 10
         order_set_address(message)
 
     elif message.text == '↪ Назад':
