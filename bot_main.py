@@ -38,9 +38,8 @@ class WebhookServer(object):
 def main_menu(message):
     config.excount = 0
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('📝 Заказать', '🥂 Корпоратив')
-    keyboard.row('💰 Прайс-лист', '⚙ Настройки')
-    keyboard.row('ℹ Информация', '👔 О нас')
+    keyboard.row('📝 Заказать', '🥂 Банкет')
+    keyboard.row('💰 Прайс-лист', 'ℹ Информация')
     msg = bot.send_message(message.chat.id, '📖 Главное меню:', reply_markup=keyboard)
     bot.register_next_step_handler(msg, menu)
 
@@ -57,14 +56,8 @@ def menu(message):
     elif message.text == '💰 Прайс-лист':
         price_list(message)
 
-    elif message.text == '⚙ Настройки':
-        settings(message)
-
     elif message.text == 'ℹ Информация':
         info(message)
-
-    elif message.text == '👔 О нас':
-        about(message)
 
 
 def order_tobacco(message):
@@ -275,50 +268,10 @@ def tobacco_prices_get(message):
         main_menu(message)
 
 
-def settings(message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('🏠 Домашний адрес', '📚 История заказов')
-    keyboard.row('↪ Назад')
-    msg = bot.send_message(message.chat.id, '👤 Аккаунт:', reply_markup=keyboard)
-    bot.register_next_step_handler(msg, account_info)
-
-
-def account_info(message):
-    if message.text == '🏠 Домашний адрес':
-        set_home_address(message)
-
-    elif message.text == '📚 История заказов':
-        bot.send_message(message.chat.id, 'Empty')
-        settings(message)
-
-    elif message.text == '↪ Назад':
-        main_menu(message)
-
-
-def set_home_address(message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('Сохранить')
-    msg = bot.send_message(message.chat.id, 'Введите домашний адрес:', reply_markup=keyboard)
-    bot.register_next_step_handler(msg, save_address)
-
-
-def save_address(message):
-    if message.text == 'Сохранить':
-        bot.send_message(message.chat.id, 'Сохранено')
-        account_info(message)
-
-
-def about(message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add('↪ Назад')
-    msg = bot.send_message(message.chat.id, inf.about_us, reply_markup=keyboard)
-    bot.register_next_step_handler(msg, main_menu)
-
-
 def info(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('Правила предоставления услуг')
-    keyboard.row('Штрафы')
+    keyboard.row('Штрафы', 'О нас')
     keyboard.row('↪ Назад')
     msg = bot.send_message(message.chat.id, 'Информация:', reply_markup=keyboard)
     bot.register_next_step_handler(msg, select_info)
@@ -330,6 +283,10 @@ def select_info(message):
         info(message)
 
     elif message.text == 'Штрафы':
+        bot.send_message(message.chat.id, 'Empty')
+        info(message)
+
+    elif message.text == 'О нас':
         bot.send_message(message.chat.id, 'Empty')
         info(message)
 
