@@ -302,3 +302,6 @@ def select_info(message):
 
     elif message.text == '↪ Назад':
         main_menu(message)
+
+
+bot.polling(none_stop=True)
