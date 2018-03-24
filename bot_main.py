@@ -46,6 +46,7 @@ def main_menu(message):
 
 def menu(message):
     if message.text == '📝 Заказать':
+        config.excount += 1
         order_tobacco(message)
 
     elif message.text == '🥂 Банкет':
@@ -75,6 +76,7 @@ def order_tobacco(message):
 
 def order_tobacco_get(message):
     if message.text == '🐒 Лёгкий':
+        config.excount += 1
         order_cups(message)
 
     elif message.text == '🦍 Крепкий':
@@ -143,16 +145,16 @@ def done(message):
 
 def close_order(message):
     if message.text == '✔ Завершить':
-        if config.excount == 1:
+        if config.excount == 3:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + config.address)
 
-        elif config.excount == 2:
+        elif config.excount == 4:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n2 чаши\nПо адресу:\n' + config.address)
 
-        elif config.excount == 3:
+        elif config.excount == 5:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n3 чаши\nПо адресу:\n' + config.address)
 
-        elif config.excount == 4:
+        elif config.excount == 6:
             bot.send_message(chat_id=config.my_id,
                              text='Заказ:\nЛёгкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
 
