@@ -108,9 +108,7 @@ def order_cups_get(message):
 
 
 def order_set_address(message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('Отправить')
-    msg = bot.send_message(message.chat.id, 'Напишите адрес доставки', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, 'Напишите адрес доставки')
     bot.register_next_step_handler(msg, address_is_empty)
 
 
