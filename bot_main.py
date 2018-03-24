@@ -51,9 +51,11 @@ def main_menu(message):
 
 def menu(message):
     if message.text == '📝 Заказать':
+        config.excount += 1
         order_tobacco(message)
 
     elif message.text == '🥂 Банкет':
+        config.excount += 2
         banquet(message)
 
     elif message.text == '💰 Прайс-лист':
@@ -79,10 +81,11 @@ def order_tobacco(message):
 
 def order_tobacco_get(message):
     if message.text == '🐒 Лёгкий':
-        bot.send_message(chat_id=135809736, text='Лёгкий')
+        config.excount += 1
         order_cups(message)
 
     elif message.text == '🦍 Крепкий':
+        config.excount += 10
         order_cups(message)
 
 
@@ -96,15 +99,19 @@ def order_cups(message):
 
 def order_cups_get(message):
     if message.text == '1️⃣ Одна':
+        config.excount += 1
         order_set_address(message)
 
     elif message.text == '2️⃣ Две':
+        config.excount += 2
         order_set_address(message)
 
     elif message.text == '3️⃣ Три':
+        config.excount += 3
         order_set_address(message)
 
     elif message.text == '🔢 Более трёх':
+        config.excount += 4
         order_set_address(message)
 
     elif message.text == '↪ Назад':
@@ -115,6 +122,7 @@ def order_set_address(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('Отправить')
     msg = bot.send_message(message.chat.id, 'Напишите адрес доставки', reply_markup=keyboard)
+    config.address = msg
     bot.register_next_step_handler(msg, verify_order)
 
 
@@ -142,6 +150,29 @@ def done(message):
 
 def close_order(message):
     if message.text == '✔ Завершить':
+        if config.excount == 3:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + config.address)
+
+        elif config.excount == 4:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n2 чаши\nПо адресу:\n' + config.address)
+
+        elif config.excount == 5:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n3 чаши\nПо адресу:\n' + config.address)
+
+        elif config.excount == 6:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
+
+        elif config.excount == 12:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n1 чаша\nПо адресу:\n' + config.address)
+
+        elif config.excount == 13:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n2 чаши\nПо адресу:\n' + config.address)
+
+        elif config.excount == 14:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n3 чаши\nПо адресу:\n' + config.address)
+
+        elif config.excount == 15:
+            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\nБолее трёх чаш\nПо адресу:\n' + config.address)
         main_menu(message)
 
 
