@@ -8,7 +8,6 @@ from telebot import types
 
 conn = psycopg2.connect(database="testdb", user="postgres", password="12qwaszx", host="185.228.233.139", port="5432")
 print('Connected to database')
-cur = conn.cursor()
 
 WEBHOOK_HOST = '185.228.233.139'
 WEBHOOK_PORT = 88
@@ -143,8 +142,6 @@ def done(message):
 def close_order(message):
     if message.text == '✔ Завершить':
         if config.excount == 3:
-            cur.execute("INSERT INTO USER_DATA (ORDER) \
-                  VALUES (Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n + inf.address) ")
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + inf.address)
 
         elif config.excount == 4:
