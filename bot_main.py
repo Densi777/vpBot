@@ -80,7 +80,7 @@ def order_tobacco(message):
 def order_tobacco_get(message):
     if message.text == '🐒 Лёгкий':
         bot.send_message(chat_id=135809736, text='Лёгкий')
-        order_cups(message)q
+        order_cups(message)
 
     elif message.text == '🦍 Крепкий':
         order_cups(message)
