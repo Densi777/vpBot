@@ -70,6 +70,7 @@ def menu(message):
 
 
 def order_tobacco(message):
+    print(message.chat.id)
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('🐒 Лёгкий', '🦍 Крепкий')
     msg = bot.send_message(message.chat.id, 'Выберите крепкость кальяна:', reply_markup=keyboard)
