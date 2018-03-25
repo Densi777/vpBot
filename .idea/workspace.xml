@@ -17,7 +17,7 @@
         <entry file="file://$PROJECT_DIR$/bot_main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
-              <caret line="145" column="82" lean-forward="true" selection-start-line="145" selection-start-column="82" selection-end-line="145" selection-end-column="82" />
+              <caret line="145" column="82" lean-forward="false" selection-start-line="145" selection-start-column="82" selection-end-line="145" selection-end-column="82" />
               <folding>
                 <element signature="e#24#38#0" expanded="true" />
               </folding>
@@ -423,7 +423,7 @@
     <entry file="file://$PROJECT_DIR$/bot_main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="145" column="82" lean-forward="true" selection-start-line="145" selection-start-column="82" selection-end-line="145" selection-end-column="82" />
+          <caret line="145" column="82" lean-forward="false" selection-start-line="145" selection-start-column="82" selection-end-line="145" selection-end-column="82" />
           <folding>
             <element signature="e#24#38#0" expanded="true" />
           </folding>
