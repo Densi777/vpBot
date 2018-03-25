@@ -142,8 +142,9 @@ def done(message):
 def close_order(message):
     if message.text == '✔ Завершить':
         if config.excount == 3:
-            cur.execute("INSERT INTO USER_DATA (ORDER)"
-                        "VALUES ('Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + inf.address);")
+            cur.execute("INSERT INTO USER_DATA (USER_ID, USERNAME, ORDER)"
+                        "VALUES ({message.chat.id}, {message.user_id}, "
+                        "'Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + inf.address);")
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + inf.address)
 
         elif config.excount == 4:
