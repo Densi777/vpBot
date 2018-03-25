@@ -142,7 +142,7 @@ def db_update(message):
     cur = conn.cursor()
 
     cur.execute('''INSERT INTO "USER_DATA" VALUES (%s, %s, %s, 'Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу: %s');''',
-                (config.id, message.chat.id, message.chat.username, inf.address))
+                (config.id, message.user.id, message.chat.username, inf.address))
     config.id += 1
     conn.commit()
     conn.close()
@@ -154,7 +154,7 @@ def db_get(message):
     print('Connected to database')
     cur = conn.cursor()
 
-    cur.execute('''SELECT USERNAME, ORDER from "USER_DATA" WHERE USERNAME=s%''', message.chat.id)
+    cur.execute('''SELECT USERNAME, ORDER from "USER_DATA" WHERE USER_ID=s%''', message.user.id)
     user = cur.fetchone()
     bot.send_message(chat_id=config.my_id, text=user)
     conn.close()
