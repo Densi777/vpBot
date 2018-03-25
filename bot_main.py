@@ -18,10 +18,6 @@ WEBHOOK_URL_PATH = "/%s/" % config.token
 
 bot = telebot.TeleBot(config.token)
 
-conn = psycopg2.connect(database="testdb", user="postgres", password="12qwaszx", host="185.228.233.139", port="5432")
-print('Connected to database')
-cur = conn.cursor()
-
 
 class WebhookServer(object):
     @cherrypy.expose
@@ -139,14 +135,35 @@ def done(message):
     bot.register_next_step_handler(msg, close_order)
 
 
+def db_update(message):
+    conn = psycopg2.connect(database="testdb", user="postgres", password="12qwaszx", host="185.228.233.139",
+                            port="5432")
+    print('Connected to database')
+    cur = conn.cursor()
+
+    cur.execute('''INSERT INTO "USER_DATA" VALUES (%s, %s, 'Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу: %s');''',
+                (message.chat.id, message.chat.username, inf.address))
+    conn.commit()
+    conn.close()
+
+
+def db_get(message):
+    conn = psycopg2.connect(database="testdb", user="postgres", password="12qwaszx", host="185.228.233.139",
+                            port="5432")
+    print('Connected to database')
+    cur = conn.cursor()
+
+    cur.execute('''SELECT USERNAME, ORDER from "USER_DATA" WHERE USERNAME=s%''', message.chat.id)
+    user = cur.fetchone()
+    bot.send_message(chat_id=config.my_id, text=user)
+    conn.close()
+
+
 def close_order(message):
     if message.text == '✔ Завершить':
         if config.excount == 3:
-            cur.execute('''INSERT INTO "USER_DATA" VALUES (%s, %s, 'Заказ: Лёгкий кальян, 1 чаша по адресу: %s');''',
-                        (message.chat.id, message.chat.username, inf.address))
-            conn.commit()
-            conn.close()
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n1 чаша\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 4:
             bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n2 чаши\nПо адресу:\n' + inf.address)
