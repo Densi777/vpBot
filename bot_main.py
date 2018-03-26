@@ -48,12 +48,26 @@ def select_user(message):
         main_menu(message)
 
     elif message.text == 'Администратор':
-        if message.chat.id == 135809736 or 163338699:
-            admin_menu(message)
+        login(message)
 
-        else:
-            bot.send_message(message.chat.id, 'Вы не администратор')
-            greetings(message)
+
+def login(message):
+    keyboard = types.ReplyKeyboardMarkup()
+    keyboard.add('↪ Назад')
+    msg = bot.send_message(message.chat.id, 'Введите пароль', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, password_check)
+
+
+def password_check(message):
+    if message.text == 'chlen':
+        admin_menu(message)
+
+    elif message.text != 'chlen':
+        bot.send_message(message.chat.id, 'Вы ввели неверный пароль\nПопробуйте снова:')
+        login(message)
+
+    elif message.text == '↪ Назад':
+        greetings(message)
 
 
 def main_menu(message):
