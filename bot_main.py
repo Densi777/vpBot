@@ -39,7 +39,7 @@ def select_user(message):
     if message.chat.username == 'den7i' or 'timurkorobov':
         admin_menu(message)
 
-    else:
+    elif message.chat.username != 'den7i' or 'timurkorobov':
         main_menu(message)
 
 
