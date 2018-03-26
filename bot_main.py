@@ -69,10 +69,12 @@ def main_menu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('📝 Заказать', '🥂 Банкет')
     keyboard.row('💰 Прайс-лист', 'ℹ Информация')
+    msg = bot.send_message(message.chat.id, 'Здравствуй, пользователь!\nДобро пожаловать!', reply_markup=keyboard)
     if message.chat.username == 'den7i' or 'timurkorobov':
-        admin_menu(message)
-    msg = bot.send_message(message.chat.id, '📖 Главное меню:', reply_markup=keyboard)
-    bot.register_next_step_handler(msg, menu)
+        bot.register_next_step_handler(msg, admin_menu)
+
+    else:
+        bot.register_next_step_handler(msg, menu)
 
 
 def menu(message):
