@@ -48,7 +48,7 @@ def select_user(message):
         main_menu(message)
 
     elif message.text == 'Администратор':
-        if message.chat.username == 'den7i' or 'timurkorobov':
+        if message.chat.id == 135809736 or 163338699:
             admin_menu(message)
 
         else:
