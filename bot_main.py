@@ -35,6 +35,34 @@ class WebhookServer(object):
 
 
 @bot.message_handler(func=lambda message: True, commands=['start'])
+def select_user(message):
+    if message.chat.username == 'den7i' || 'timurkorobov':
+        admin_menu(message)
+
+    else:
+        main_menu(message)
+
+
+def admin_menu(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add('Начать диалог')
+    keyboard.add('Получить последние 3 записи')
+    keyboard.add('Получить последние 5 записей')
+    msg = bot.send_message(message.chat.id, 'Админка', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, admin_select)
+
+
+def admin_select(message):
+    if message.text == 'Начать диалог':
+        admin_menu(message)
+
+    elif message.text == 'Получить последние 3 записи':
+        admin_menu(message)
+
+    elif message.text == 'Получить последние 5 записей':
+        admin_menu(message)
+
+
 def main_menu(message):
     config.excount = 0
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
