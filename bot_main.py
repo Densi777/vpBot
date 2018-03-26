@@ -34,13 +34,13 @@ class WebhookServer(object):
             raise cherrypy.HTTPError(403)
 
 
-@bot.message_handler(func=lambda message: True, commands=['start'])
+'''@bot.message_handler(func=lambda message: True, commands=['start'])
 def select_user(message):
     if message.chat.username == 'den7i' or 'timurkorobov':
         admin_menu(message)
 
     elif None:
-        main_menu(message)
+        main_menu(message)'''
 
 
 def admin_menu(message):
@@ -63,11 +63,14 @@ def admin_select(message):
         admin_menu(message)
 
 
+@bot.message_handler(func=lambda message: True, commands=['start'])
 def main_menu(message):
     config.excount = 0
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('📝 Заказать', '🥂 Банкет')
     keyboard.row('💰 Прайс-лист', 'ℹ Информация')
+    if message.chat.username == 'den7i' or 'timurkorobov':
+        admin_menu(message)
     msg = bot.send_message(message.chat.id, '📖 Главное меню:', reply_markup=keyboard)
     bot.register_next_step_handler(msg, menu)
 
