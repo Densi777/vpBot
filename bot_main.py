@@ -37,24 +37,24 @@ class WebhookServer(object):
 @bot.message_handler(func=lambda message: True, commands=['start'])
 def greetings(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('Простой пользователь')
-    keyboard.row('Администратор')
-    msg = bot.send_message(message.chat.id, 'Кто Вы?', reply_markup=keyboard)
+    keyboard.row('👶 Простой пользователь')
+    keyboard.row('👨 Администратор')
+    msg = bot.send_message(message.chat.id, '👤 Кто Вы?', reply_markup=keyboard)
     bot.register_next_step_handler(msg, select_user)
 
 
 def select_user(message):
-    if message.text == 'Простой пользователь':
+    if message.text == '👶 Простой пользователь':
         main_menu(message)
 
-    elif message.text == 'Администратор':
+    elif message.text == '👨 Администратор':
         login(message)
 
 
 def login(message):
-    keyboard = types.ReplyKeyboardMarkup()
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add('↪ Назад')
-    msg = bot.send_message(message.chat.id, 'Введите пароль', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, '🔐 Введите пароль', reply_markup=keyboard)
     bot.register_next_step_handler(msg, password_check)
 
 
@@ -66,7 +66,7 @@ def password_check(message):
         greetings(message)
 
     elif message.text != 'chlen':
-        bot.send_message(message.chat.id, 'Вы ввели неверный пароль\nПопробуйте снова:')
+        bot.send_message(message.chat.id, '⛔ Вы ввели неверный пароль\n🔄 Попробуйте снова:')
         login(message)
 
 
@@ -75,27 +75,27 @@ def main_menu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('📝 Заказать', '🥂 Банкет')
     keyboard.row('💰 Прайс-лист', 'ℹ Информация')
-    msg = bot.send_message(message.chat.id, 'Главное меню', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, '📖 Главное меню', reply_markup=keyboard)
     bot.register_next_step_handler(msg, menu)
 
 
 def admin_menu(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add('Начать диалог')
-    keyboard.add('Получить последние 3 записи')
-    keyboard.add('Получить последние 5 записей')
-    msg = bot.send_message(message.chat.id, 'Админка', reply_markup=keyboard)
+    keyboard.add('💬 Начать диалог')
+    keyboard.add('3️⃣ Получить последние 3 записи')
+    keyboard.add('5️⃣ Получить последние 5 записей')
+    msg = bot.send_message(message.chat.id, '🌈 Режим Бога', reply_markup=keyboard)
     bot.register_next_step_handler(msg, admin_select)
 
 
 def admin_select(message):
-    if message.text == 'Начать диалог':
+    if message.text == '💬 Начать диалог':
         admin_menu(message)
 
-    elif message.text == 'Получить последние 3 записи':
+    elif message.text == '3️⃣ Получить последние 3 записи':
         admin_menu(message)
 
-    elif message.text == 'Получить последние 5 записей':
+    elif message.text == '5️⃣ Получить последние 5 записей':
         admin_menu(message)
 
 
@@ -119,7 +119,7 @@ def order_tobacco(message):
     print(message.chat.id)
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('🐒 Лёгкий', '🦍 Крепкий')
-    msg = bot.send_message(message.chat.id, 'Выберите крепкость кальяна:', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, '💨 Выберите крепкость табака:', reply_markup=keyboard)
     bot.register_next_step_handler(msg, order_tobacco_get)
 
 
@@ -163,14 +163,14 @@ def order_cups_get(message):
 
 
 def order_set_address(message):
-    msg = bot.send_message(message.chat.id, 'Напишите адрес доставки')
+    msg = bot.send_message(message.chat.id, '📍 Напишите адрес доставки')
     bot.register_next_step_handler(msg, verify_order)
 
 
 def verify_order(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('✅ Да', '♻ Вернуться')
-    msg = bot.send_message(message.chat.id, 'Подтвердите Ваш заказ\nВсе верно?', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, '📋 Подтвердите Ваш заказ\n📝 Все верно?', reply_markup=keyboard)
     config.address = message.text
     bot.register_next_step_handler(msg, yes_or_no)
 
@@ -185,7 +185,7 @@ def yes_or_no(message):
 
 def done(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('✔ Завершить')
+    keyboard.row('📤 Отправить заказ')
     msg = bot.send_message(message.chat.id, '📦 Заказ принят', reply_markup=keyboard)
     bot.register_next_step_handler(msg, close_order)
 
@@ -198,7 +198,7 @@ def db_update(message):
 
     cur.execute('''INSERT INTO "USER_DATA" 
     VALUES (%s, %s, %s, 'Пользователь: %s\nЗаказ:\nЛёгкий кальян\n1 чаша\nАдрес: %s');''',
-                (message.chat.id, message.chat.username, message.date, message.chat.id, inf.address))
+                (message.chat.id, message.chat.username, message.date, message.chat.username, message.text))
     conn.commit()
     conn.close()
 
@@ -209,49 +209,58 @@ def db_get(message):
     print('Connected to database')
     cur = conn.cursor()
 
-    cur.execute('''SELECT ORDER from "USER_DATA" WHERE USER_ID=s%''', message.chat.id)
-    user = cur.fetchone()
-    bot.send_message(chat_id=config.my_id, text=user)
+    cur.execute('''SELECT ORDER from "USER_DATA"''', message.chat.id)
+    order = cur.fetchone()
+    bot.send_message(chat_id=config.my_id, text=order)
     conn.close()
 
 
 def close_order(message):
-    if message.text == '✔ Завершить':
+    if message.text == '📤 Отправить заказ':
         if config.excount == 3:
             db_update(message)
+            db_get(message)
 
         elif config.excount == 4:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n2 чаши\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 5:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\n3 чаши\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 6:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nЛёгкий кальян\nБолее трёх чаш\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 11:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n1 чаша\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 12:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n2 чаши\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 13:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nКрепкий кальян\n3 чаши\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 14:
-            bot.send_message(chat_id=config.my_id,
-                             text='Заказ:\nКрепкий кальян\nБолее трёх чаш\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 120:
-            bot.send_message(chat_id=config.my_id, text='Заказ:\nБанкет\nДо 5 человек\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 121:
-            bot.send_message(chat_id=config.my_id,
-                             text='Заказ:\nКрепкий кальян\nБолее 5 человек\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
 
         elif config.excount == 122:
-            bot.send_message(chat_id=config.my_id,
-                             text='Заказ:\nКрепкий кальян\nБолее 10 человек\nПо адресу:\n' + inf.address)
+            db_update(message)
+            db_get(message)
+
     main_menu(message)
 
 
@@ -259,7 +268,7 @@ def banquet(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('До 5', '5+', '10+')
     keyboard.row('↪ Назад')
-    msg = bot.send_message(message.chat.id, 'Сколько Вас человек?', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, '👥 Сколько Вас человек?', reply_markup=keyboard)
     bot.register_next_step_handler(msg, banquet_get)
 
 
@@ -282,22 +291,22 @@ def banquet_get(message):
 
 def count_of_hookahs(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('Один', 'Два', 'Три')
+    keyboard.row('1️⃣ Один', '2️⃣ Два', '3️⃣ Три')
     keyboard.row('↪ Назад')
     msg = bot.send_message(message.chat.id, 'Сколько нужно кальянов?', reply_markup=keyboard)
     bot.register_next_step_handler(msg, count_of_hookahs_get)
 
 
 def count_of_hookahs_get(message):
-    if message.text == 'Один':
+    if message.text == '1️⃣ Один':
         config.excount += 10
         order_set_address(message)
 
-    elif message.text == 'Два':
+    elif message.text == '2️⃣ Два':
         config.excount += 10
         order_set_address(message)
 
-    elif message.text == 'Три':
+    elif message.text == '3️⃣ Три':
         config.excount += 10
         order_set_address(message)
 
@@ -307,17 +316,17 @@ def count_of_hookahs_get(message):
 
 def price_list(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('Табак', 'Обслуживание банкетов')
+    keyboard.row('🍂 Табак', '🍸 Обслуживание банкетов')
     keyboard.row('↪ Назад')
-    msg = bot.send_message(message.chat.id, 'Прайс-лист:', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, '💰 Прайс-лист:', reply_markup=keyboard)
     bot.register_next_step_handler(msg, price_list_get)
 
 
 def price_list_get(message):
-    if message.text == 'Табак':
+    if message.text == '🍂 Табак':
         tobacco_prices(message)
 
-    elif message.text == 'Обслуживание банкетов':
+    elif message.text == '🍸 Обслуживание банкетов':
         bot.send_message(message.chat.id, inf.banquet_price)
         price_list(message)
 
@@ -327,18 +336,18 @@ def price_list_get(message):
 
 def tobacco_prices(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('Лёгкий', 'Крепкий')
+    keyboard.row('🐒 Лёгкий', '🦍 Крепкий')
     keyboard.row('↪ Назад')
     msg = bot.send_message(message.chat.id, 'Табак:', reply_markup=keyboard)
     bot.register_next_step_handler(msg, tobacco_prices_get)
 
 
 def tobacco_prices_get(message):
-    if message.text == 'Лёгкий':
+    if message.text == '🐒 Лёгкий':
         bot.send_message(message.chat.id, inf.easy_tobacco)
         price_list(message)
 
-    elif message.text == 'Крепкий':
+    elif message.text == '🦍 Крепкий':
         bot.send_message(message.chat.id, inf.hard_tobacco)
         price_list(message)
 
@@ -348,23 +357,23 @@ def tobacco_prices_get(message):
 
 def info(message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row('Правила предоставления услуг')
-    keyboard.row('Штрафы', 'О нас')
+    keyboard.row('📄 Правила предоставления услуг')
+    keyboard.row('⚠ Штрафы', '👔 О нас')
     keyboard.row('↪ Назад')
-    msg = bot.send_message(message.chat.id, 'Информация:', reply_markup=keyboard)
+    msg = bot.send_message(message.chat.id, 'ℹ Информация:', reply_markup=keyboard)
     bot.register_next_step_handler(msg, select_info)
 
 
 def select_info(message):
-    if message.text == 'Правила предоставления услуг':
+    if message.text == '📄 Правила предоставления услуг':
         bot.send_message(message.chat.id, 'Empty')
         info(message)
 
-    elif message.text == 'Штрафы':
+    elif message.text == '⚠ Штрафы':
         bot.send_message(message.chat.id, 'Empty')
         info(message)
 
-    elif message.text == 'О нас':
+    elif message.text == '👔 О нас':
         bot.send_message(message.chat.id, 'Empty')
         info(message)
 
