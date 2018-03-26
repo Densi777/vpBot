@@ -62,12 +62,12 @@ def password_check(message):
     if message.text == 'chlen':
         admin_menu(message)
 
+    elif message.text == '↪ Назад':
+        greetings(message)
+
     elif message.text != 'chlen':
         bot.send_message(message.chat.id, 'Вы ввели неверный пароль\nПопробуйте снова:')
         login(message)
-
-    elif message.text == '↪ Назад':
-        greetings(message)
 
 
 def main_menu(message):
