@@ -36,7 +36,7 @@ class WebhookServer(object):
 
 @bot.message_handler(func=lambda message: True, commands=['start'])
 def select_user(message):
-    if message.chat.username == 'den7i' || 'timurkorobov':
+    if message.chat.username == ('den7i' || 'timurkorobov'):
         admin_menu(message)
 
     else:
