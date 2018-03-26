@@ -34,27 +34,35 @@ class WebhookServer(object):
             raise cherrypy.HTTPError(403)
 
 
-'''@bot.message_handler(func=lambda message: True, commands=['start'])
-def select_user(message):
-    if message.chat.username == 'den7i' or 'timurkorobov':
-        admin_menu(message)
-
-    elif None:
-        main_menu(message)'''
-
-
 @bot.message_handler(func=lambda message: True, commands=['start'])
+def greetings(message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.row('Простой пользователь')
+    keyboard.row('Администратор')
+    msg = bot.send_message(message.chat.id, 'Кто Вы?', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, select_user)
+
+
+def select_user(message):
+    if message.text == 'Простой пользователь':
+        main_menu(message)
+
+    elif message.text == 'Администратор':
+        if message.chat.username == 'den7i' or 'timurkorobov':
+            admin_menu(message)
+
+        else:
+            bot.send_message(message.chat.id, 'Вы не администратор')
+            greetings(message)
+
+
 def main_menu(message):
     config.excount = 0
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row('📝 Заказать', '🥂 Банкет')
     keyboard.row('💰 Прайс-лист', 'ℹ Информация')
-    msg = bot.send_message(message.chat.id, 'Здравствуй, пользователь!\nДобро пожаловать!', reply_markup=keyboard)
-    if message.chat.username == 'den7i' or 'timurkorobov':
-        bot.register_next_step_handler(msg, admin_menu)
-
-    else:
-        bot.register_next_step_handler(msg, menu)
+    msg = bot.send_message(message.chat.id, 'Главное меню', reply_markup=keyboard)
+    bot.register_next_step_handler(msg, menu)
 
 
 def admin_menu(message):
