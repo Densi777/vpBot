@@ -59,13 +59,13 @@ def login(message):
 
 
 def password_check(message):
-    if message.text == 'chlen':
+    if message.text == 'root':
         admin_menu(message)
 
     elif message.text == '↪ Назад':
         greetings(message)
 
-    elif message.text != 'chlen':
+    elif message.text != 'root':
         bot.send_message(message.chat.id, '⛔ Вы ввели неверный пароль\n🔄 Попробуйте снова:')
         login(message)
 
@@ -197,7 +197,7 @@ def db_update(message):
     cur = conn.cursor()
 
     cur.execute('''INSERT INTO "USER_DATA" 
-    VALUES (%s, %s, %s, 'Пользователь: %s\nЗаказ:\nЛёгкий кальян\n1 чаша\nАдрес: %s');''',
+                VALUES (%s, %s, %s, 'User: @%s,\nOrder:\nEasy Hookah\n1 cup\nAddress: %s');''',
                 (message.chat.id, message.chat.username, message.date, message.chat.username, message.text))
     conn.commit()
     conn.close()
