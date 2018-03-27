@@ -197,8 +197,7 @@ def db_update(message):
     cur = conn.cursor()
 
     cur.execute('''INSERT INTO "USER_DATA" 
-                VALUES (%s, %s, %s, "User:\n@%s,\nOrder:\nEasy Hookah\n1 cup\nAddress:\n%s");''',
-                (message.chat.id, message.chat.username, message.date, message.chat.username, message.text))
+                VALUES (%s, %s, %s, %s);''', (message.chat.id, message.chat.username, message.date, inf.order))
     conn.commit()
     conn.close()
 
@@ -218,6 +217,7 @@ def db_get(message):
 def close_order(message):
     if message.text == '📤 Отправить заказ':
         if config.excount == 3:
+            inf.order = ('От: @%s:\nЗаказ: кальян\nТабак: Лёгкий\nЧашка: 1\nАдрес: %s', message.chat.username, message.text)
             db_update(message)
             db_get(message)
 
