@@ -197,7 +197,7 @@ def db_update(message):
     cur = conn.cursor()
 
     cur.execute('''INSERT INTO "USER_DATA" 
-                VALUES (%s, %s, %s, 'User: @%s,\nOrder:\nEasy Hookah\n1 cup\nAddress: %s');''',
+                VALUES (%s, %s, %s, "User:\n@%s,\nOrder:\nEasy Hookah\n1 cup\nAddress:\n%s");''',
                 (message.chat.id, message.chat.username, message.date, message.chat.username, message.text))
     conn.commit()
     conn.close()
